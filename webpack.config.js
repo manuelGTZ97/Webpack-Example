@@ -1,6 +1,8 @@
 const path = require('path');
 const FlowBabelWebpackPlugin = require('flow-babel-webpack-plugin');
 const ImageminPlugin = require("imagemin-webpack");
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+const HtmlWebpackplugin = require('html-webpack-plugin');
  
 // Before importing imagemin plugin make sure you add it in `package.json` (`dependencies`) and install
 const imageminGifsicle = require("imagemin-gifsicle");
@@ -57,6 +59,12 @@ module.exports = {
     },
     plugins: [
         new FlowBabelWebpackPlugin(),
+        new HtmlWebpackplugin({
+            minify:{
+                collapseWhitespace: true
+            },
+            template: './src/views/index.html'
+        }),
         new ImageminPlugin({
             bail: false,
             cache: true,
@@ -76,6 +84,11 @@ module.exports = {
                     })
                 ]
             }
+        }),
+        new BrowserSyncPlugin({
+            host: 'localhost',
+            port: 3000,
+            server: { baseDir: ['./dist'] }
         })
     ]
 };
