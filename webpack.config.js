@@ -63,6 +63,7 @@ module.exports = {
             minify:{
                 collapseWhitespace: true
             },
+            filename: 'index.html',
             template: './src/views/index.html'
         }),
         new ImageminPlugin({
