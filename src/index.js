@@ -1,6 +1,9 @@
 // @flow
 import './css/index.css';
+import './css/styles.sass';
+import img from './images/test.jpg';
+import spawn from './images/spawn.jpg';
 
 var x:string = "e";
-x = "2";
+x = "e";
 console.log('Webpack compilado');

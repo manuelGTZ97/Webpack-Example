@@ -1,5 +1,12 @@
 const path = require('path');
 const FlowBabelWebpackPlugin = require('flow-babel-webpack-plugin');
+const ImageminPlugin = require("imagemin-webpack");
+ 
+// Before importing imagemin plugin make sure you add it in `package.json` (`dependencies`) and install
+const imageminGifsicle = require("imagemin-gifsicle");
+const imageminJpegtran = require("imagemin-jpegtran");
+const imageminOptipng = require("imagemin-optipng");
+const imageminSvgo = require("imagemin-svgo");
 
 module.exports = {
     entry: './src/index.js',
@@ -25,10 +32,50 @@ module.exports = {
                     'style-loader',
                     'css-loader'
                 ]
+            },
+            {
+                test:  /\.(sass|scss)$/,
+                use: [
+                    "style-loader",
+                    "css-loader",
+                    "sass-loader"
+                ]
+            },
+            {
+                test: /\.(jpe?g|png|gif|svg)$/i,
+                use: [
+                  {
+                    loader: 'file-loader',
+                    options: {
+                        outputPath: 'images/',
+                        name: '[name].[ext]'
+                    }
+                  }
+                ]
             }
         ]
     },
     plugins: [
-        new FlowBabelWebpackPlugin()
+        new FlowBabelWebpackPlugin(),
+        new ImageminPlugin({
+            bail: false,
+            cache: true,
+            imageminOptions: {
+                plugins: [
+                    imageminGifsicle({
+                        interlaced: true
+                    }),
+                    imageminJpegtran({
+                        arithmetic: true
+                    }),
+                    imageminOptipng({
+                        optimizationLevel: 5
+                    }),
+                    imageminSvgo({
+                        removeViewBox: true
+                    })
+                ]
+            }
+        })
     ]
 };
